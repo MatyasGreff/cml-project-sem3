@@ -19,7 +19,7 @@ def main():
     
     st.markdown(html_templ,unsafe_allow_html=True)
 
-    activity = ["Number of wins determination", "Predict Score Per Minute", "About"]
+    activity = ["Number of wins determination", "Predict Score Per Minute", "From kill ratio, predict Win Ratio", "Predict Duo Win Ratio", "About"]
     choice = st.sidebar.selectbox("Menu", activity)
 
     if choice == "Number of wins determination":
@@ -51,14 +51,50 @@ def main():
 
         if st.button("Predict Score Per Minute"):
             regressor = load_prediction_model("../models/predict_score_perminute.pkl")
-            input_reshaped = [[kdRatio], [xp]]
+            input_reshaped = [[kdRatio, xp]]
 
             #st.write(type(experience_reshaped))
             #st.write(experience_reshaped.shape)
 
             predicted_score = regressor.predict(input_reshaped)
 
-            st.info("At level {}, your score per minute should be: {}".format(kdRatio,int((predicted_score[0][0].round(0)))))        
+            st.info("With a {} kill/death ratio, and {} total xp, your score per minute is: {}".format(kdRatio, xp, (predicted_score[0][0].round(2))))
+    elif choice == "From kill ratio, predict Win Ratio":
+        st.subheader("From kill ratio, predict Win Ratio")
+        st.markdown("""
+        This model shows what your win ratio should be, based on your kill/death ratio.
+        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        """)
+        kdRatio = st.number_input(label="What is your kill/death ratio in Fortnite?",step=1.,format="%.2f")
+
+        if st.button("Determination"):
+            regressor = load_prediction_model("../models/givenKillRatioPredictWinRatio.pkl")
+            kd_reshaped = np.array(kdRatio).reshape(-1,1)
+
+            #st.write(type(experience_reshaped))
+            #st.write(experience_reshaped.shape)
+
+            predicted_wins = regressor.predict(kd_reshaped)
+
+            st.info("With a {} kill/death ratio, your win ratio should be: {}".format(kdRatio,(predicted_wins[0].round(2))))
+    elif choice == "Predict Duo Win Ratio":
+        st.subheader("Predict Duo Win Ratio")
+        st.markdown("""
+        This model shows what your duo win ratio should be, based on your solo win ratio.
+        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        """)
+        solowin = st.number_input(label="What is your solo win ratio in Fortnite?",step=1.,format="%.2f")
+
+        if st.button("Determination"):
+            regressor = load_prediction_model("../models/givenSoloWinRatioPredictDuoWinRatio.pkl")
+            solowin_reshaped = np.array(solowin).reshape(-1,1)
+
+            #st.write(type(experience_reshaped))
+            #st.write(experience_reshaped.shape)
+
+            predicted_wins = regressor.predict(solowin_reshaped)
+
+            st.info("With a {} solo win ratio, your duo win ratio should be: {}".format(solowin,(predicted_wins[0].round(2))))         
     else:
         st.subheader("About")
         st.markdown("""
