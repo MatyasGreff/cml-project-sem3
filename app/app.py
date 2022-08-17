@@ -31,7 +31,7 @@ def main():
         level = st.number_input("What is your experience level in Call of Duty?",1,500)
 
         if st.button("Determination"):
-            regressor = load_prediction_model("../models/win_level_regression.pkl")
+            regressor = load_prediction_model("/models/win_level_regression.pkl")
             level_reshaped = np.array(level).reshape(-1,1)
 
 			#st.write(type(experience_reshaped))
@@ -50,7 +50,7 @@ def main():
         xp = st.number_input("What is your overall experience points in Call of Duty?",1,5000000)
 
         if st.button("Predict Score Per Minute"):
-            regressor = load_prediction_model("../models/predict_score_perminute.pkl")
+            regressor = load_prediction_model("/models/predict_score_perminute.pkl")
             input_reshaped = [[kdRatio, xp]]
 
             #st.write(type(experience_reshaped))
@@ -68,7 +68,7 @@ def main():
         kdRatio = st.number_input(label="What is your kill/death ratio in Fortnite?",step=1.,format="%.2f")
 
         if st.button("Determination"):
-            regressor = load_prediction_model("../models/givenKillRatioPredictWinRatio.pkl")
+            regressor = load_prediction_model("/models/givenKillRatioPredictWinRatio.pkl")
             kd_reshaped = np.array(kdRatio).reshape(-1,1)
 
             #st.write(type(experience_reshaped))
@@ -86,7 +86,7 @@ def main():
         solowin = st.number_input(label="What is your solo win ratio in Fortnite?",step=1.,format="%.2f")
 
         if st.button("Determination"):
-            regressor = load_prediction_model("../models/givenSoloWinRatioPredictDuoWinRatio.pkl")
+            regressor = load_prediction_model("models/givenSoloWinRatioPredictDuoWinRatio.pkl")
             solowin_reshaped = np.array(solowin).reshape(-1,1)
 
             #st.write(type(experience_reshaped))
