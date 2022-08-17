@@ -9,43 +9,50 @@ def load_prediction_model(model_file):
     return loaded_model
 
 def main():
-    st.title("Salary determination Application")
+    st.title("Cloud Machine Learning Project Demo Application")
 
     html_templ = """
 	<div style="background-color:blue;padding:10px;">
-	<h3 style="color:cyan">Very Simple Linear Regression Web App for Salary Determination</h3>
+	<h3 style="color:cyan">Simply select the values and use the models to make predictions</h3>
 	</div>
 	"""
     
     st.markdown(html_templ,unsafe_allow_html=True)
 
-    activity = ["Salary determination", "About"]
+    activity = ["Number of wins determination", "About"]
     choice = st.sidebar.selectbox("Menu", activity)
 
-    if choice == "Salary determination":
-        st.subheader("Salary determination")
-
-        experience = st.slider("Years of Experience",0,20)
+    if choice == "Number of wins determination":
+        st.subheader("Number of wins determination")
+        st.markdown("""
+        This model shows where your number of wins should be, based on your level.
+        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        """)
+        level = st.number_input("What is your experience level in Call of Duty?",1,500)
 
         if st.button("Determination"):
-            regressor = load_prediction_model("../models/linear_regression_salary.pkl")
-            experience_reshaped = np.array(experience).reshape(-1,1)
+            regressor = load_prediction_model("../models/win_level_regression.pkl")
+            level_reshaped = np.array(level).reshape(-1,1)
 
 			#st.write(type(experience_reshaped))
 			#st.write(experience_reshaped.shape)
 
-            predicted_salary = regressor.predict(experience_reshaped)
+            predicted_wins = regressor.predict(level_reshaped)
 
-            st.info("Salary related to {} years of experience: {}".format(experience,(predicted_salary[0][0].round(2))))
+            st.info("At level {}, your number of wins should be: {}".format(level,int((predicted_wins[0][0].round(0)))))
     else:
         st.subheader("About")
         st.markdown("""
-			## Very Simple Linear Regression App
+			## Cloud Machine Learning Project Demo Application
 			
 			##### By
-			+ **[Rosario Moscato LAB](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)**
-			+ [rosariomoscatolab@gmail.com](mailto:rosariomoscatolab@gmail.com)
+			+ **[Matyas Greff - x21129878](https://github.com/MatyasGreff)**
+			+ **[Jeisse Rocha - x21129924](https://github.com/Jeisse)**
 			""")
-
+        st.markdown("""
+			## Repo
+			
+			+ **[cml-project-sem3](https://github.com/MatyasGreff/cml-project-sem3)**
+			""")
 if __name__ == "__main__":
     main()
