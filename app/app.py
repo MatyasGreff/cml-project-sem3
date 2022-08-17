@@ -19,7 +19,7 @@ def main():
     
     st.markdown(html_templ,unsafe_allow_html=True)
 
-    activity = ["Number of wins determination", "About"]
+    activity = ["Number of wins determination", "Predict Score Per Minute", "About"]
     choice = st.sidebar.selectbox("Menu", activity)
 
     if choice == "Number of wins determination":
@@ -40,6 +40,25 @@ def main():
             predicted_wins = regressor.predict(level_reshaped)
 
             st.info("At level {}, your number of wins should be: {}".format(level,int((predicted_wins[0][0].round(0)))))
+    elif choice == "Predict Score Per Minute":
+        st.subheader("Predict Score Per Minute")
+        st.markdown("""
+        This model shows where your score per minute should be. If you are looking to farm score efficiently, this stat might be important for you.
+        Simply enter your kdRatio and xp to find out your estimated score per minute.
+        """)
+        kdRatio = st.number_input(label="What is your kill/death ratio in Call of Duty?",step=1.,format="%.2f")
+        xp = st.number_input("What is your overall experience points in Call of Duty?",1,5000000)
+
+        if st.button("Predict Score Per Minute"):
+            regressor = load_prediction_model("../models/predict_score_perminute.pkl")
+            input_reshaped = [[kdRatio], [xp]]
+
+            #st.write(type(experience_reshaped))
+            #st.write(experience_reshaped.shape)
+
+            predicted_score = regressor.predict(input_reshaped)
+
+            st.info("At level {}, your score per minute should be: {}".format(kdRatio,int((predicted_score[0][0].round(0)))))        
     else:
         st.subheader("About")
         st.markdown("""
