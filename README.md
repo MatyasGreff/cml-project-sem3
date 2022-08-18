@@ -15,6 +15,8 @@ learning techniques.
 
 
 ### How to run application locally
+
+On the app folther run: 
 ```
 pip install streamlit
 pip install -r requirements.txt
