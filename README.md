@@ -4,6 +4,10 @@
 learning techniques.
 
 
+This project proposes a machine learning solution that based on historical data collected from Fortnite and Call of Duty, will provide some information related to players performance. Information like: based on solo win ratio, predict duo win ratio; the more enemies you kill, more often you going to win? based on player level, what is the number of wins?
+These questions are basically to give some insights to these players and so, making them able to choose and understand their way of playing. 
+
+
 
 ### Artifacts
 
