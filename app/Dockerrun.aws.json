@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "matyasgreff/streamlit_docker_ebl",
+      "Name": "matyasgreff/cloudml-app-final",
       "Update": "true"
     },
     "Ports": [
