@@ -83,7 +83,7 @@ def main():
         This model shows what your duo win ratio should be, based on your solo win ratio.
         If your actual number of wins is below the Prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
         """)
-        solowin = st.slider(label="What is your kill/death ratio in Call of Duty?",step=float(0.01), min_value=float(0.0), max_value=float(10.0), value=1.0)
+        solowin = st.slider(label="What is your win ratio when playing on duos in Fortnite?",step=float(0.01), min_value=float(0.0), max_value=float(10.0), value=1.0)
 
         if st.button("Prediction"):
             regressor = load_Prediction_model("models/givenSoloWinRatioPredictDuoWinRatio.pkl")
