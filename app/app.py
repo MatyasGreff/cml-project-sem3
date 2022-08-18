@@ -4,7 +4,7 @@ import joblib,os
 import numpy as np
 
 
-def load_prediction_model(model_file):
+def load_Prediction_model(model_file):
     loaded_model = joblib.load(open(os.path.join(model_file),"rb"))
     return loaded_model
 
@@ -13,25 +13,25 @@ def main():
 
     html_templ = """
 	<div style="background-color:blue;padding:10px;">
-	<h3 style="color:cyan">Simply select the values and use the models to make predictions</h3>
+	<h3 style="color:cyan">Simply select the values and use the models to make Predictions</h3>
 	</div>
 	"""
     
     st.markdown(html_templ,unsafe_allow_html=True)
 
-    activity = ["Number of wins determination", "Predict Score Per Minute", "From kill ratio, predict Win Ratio", "Predict Duo Win Ratio", "About"]
+    activity = ["Number of wins Prediction", "Predict Score Per Minute", "From kill ratio, predict Win Ratio", "Predict Duo Win Ratio", "About"]
     choice = st.sidebar.selectbox("Menu", activity)
 
-    if choice == "Number of wins determination":
-        st.subheader("Number of wins determination")
+    if choice == "Number of wins Prediction":
+        st.subheader("Number of wins Prediction")
         st.markdown("""
         This model shows where your number of wins should be, based on your level.
-        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        If your actual number of wins is below the Prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
         """)
-        level = st.number_input("What is your experience level in Call of Duty?",1,500)
+        level = st.slider("What is your experience level in Call of Duty?",1,500, value=100)
 
-        if st.button("Determination"):
-            regressor = load_prediction_model("models/win_level_regression.pkl")
+        if st.button("Prediction"):
+            regressor = load_Prediction_model("models/win_level_regression.pkl")
             level_reshaped = np.array(level).reshape(-1,1)
 
 			#st.write(type(experience_reshaped))
@@ -46,11 +46,11 @@ def main():
         This model shows where your score per minute should be. If you are looking to farm score efficiently, this stat might be important for you.
         Simply enter your kdRatio and xp to find out your estimated score per minute.
         """)
-        kdRatio = st.number_input(label="What is your kill/death ratio in Call of Duty?",step=1.,format="%.2f")
+        kdRatio = st.slider(label="What is your kill/death ratio in Call of Duty?",step=float(0.01), min_value=float(0.0), max_value=float(10.0), value=1.0)
         xp = st.number_input("What is your overall experience points in Call of Duty?",1,5000000)
 
         if st.button("Predict Score Per Minute"):
-            regressor = load_prediction_model("models/predict_score_perminute.pkl")
+            regressor = load_Prediction_model("models/predict_score_perminute.pkl")
             input_reshaped = [[kdRatio, xp]]
 
             #st.write(type(experience_reshaped))
@@ -63,12 +63,12 @@ def main():
         st.subheader("From kill ratio, predict Win Ratio")
         st.markdown("""
         This model shows what your win ratio should be, based on your kill/death ratio.
-        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        If your actual number of wins is below the Prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
         """)
-        kdRatio = st.number_input(label="What is your kill/death ratio in Fortnite?",step=1.,format="%.2f")
+        kdRatio = st.slider(label="What is your kill/death ratio in Fortnite?",step=float(0.01), min_value=float(0.0), max_value=float(10.0), value=1.0)
 
-        if st.button("Determination"):
-            regressor = load_prediction_model("models/givenKillRatioPredictWinRatio.pkl")
+        if st.button("Prediction"):
+            regressor = load_Prediction_model("models/givenKillRatioPredictWinRatio.pkl")
             kd_reshaped = np.array(kdRatio).reshape(-1,1)
 
             #st.write(type(experience_reshaped))
@@ -81,12 +81,12 @@ def main():
         st.subheader("Predict Duo Win Ratio")
         st.markdown("""
         This model shows what your duo win ratio should be, based on your solo win ratio.
-        If your actual number of wins is below the prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
+        If your actual number of wins is below the Prediction, try harder. If your real wins are higher: Congrats! You are better than average, based on our dataset.
         """)
-        solowin = st.number_input(label="What is your solo win ratio in Fortnite?",step=1.,format="%.2f")
+        solowin = st.slider(label="What is your kill/death ratio in Call of Duty?",step=float(0.01), min_value=float(0.0), max_value=float(10.0), value=1.0)
 
-        if st.button("Determination"):
-            regressor = load_prediction_model("models/givenSoloWinRatioPredictDuoWinRatio.pkl")
+        if st.button("Prediction"):
+            regressor = load_Prediction_model("models/givenSoloWinRatioPredictDuoWinRatio.pkl")
             solowin_reshaped = np.array(solowin).reshape(-1,1)
 
             #st.write(type(experience_reshaped))
